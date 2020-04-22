@@ -37,20 +37,20 @@ class TaskController extends Controller
     }
     public function show_task()
     {
-        $Task = DB::table('Task_details')
-            ->leftjoin('Tasks','Task_details.task_id','tasks.id')
-            ->where('Task_details.user_id',Auth()->user()->id)
-            ->select('Tasks.*')
+        $Task = DB::table('task_details')
+            ->leftjoin('tasks','task_details.task_id','tasks.id')
+            ->where('task_details.user_id',Auth()->user()->id)
+            ->select('tasks.*')
             ->get();
       
             return view('v_task')->with(compact('Task'));
     }
     public function get_taskByUser(Request $request)
     {
-            $Task = DB::table('Task_details')
-            ->leftjoin('Tasks','Task_details.task_id','tasks.id')
-            ->where('Task_details.user_id',$request->user_id)
-            ->select('Tasks.*')
+            $Task = DB::table('task_details')
+            ->leftjoin('tasks','task_details.task_id','tasks.id')
+            ->where('task_details.user_id',$request->user_id)
+            ->select('tasks.*')
             ->get();
         
             return compact('Task');

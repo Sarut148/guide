@@ -33,9 +33,9 @@ class UserController extends Controller
     {
         
         $user = User::where('status',2)
-        ->leftjoin('task_details','Users.id','task_details.user_id')
-        ->groupBy('Users.id')
-        ->select(DB::raw('count(task_details.id) as task_number ,Users.*'))
+        ->leftjoin('task_details','users.id','task_details.user_id')
+        ->groupBy('users.id')
+        ->select(DB::raw('count(task_details.id) as task_number ,users.*'))
         ->get();
         return view('v_guide')->with(compact('user'));
     }
@@ -43,15 +43,15 @@ class UserController extends Controller
     public function get_byCard(Request $request)
     {
         // $User =  User::where('status',2)->where('name','Like','%'.$request->name_guide.'%')->get();
-        $Task =  DB::table('Users')
-        ->leftJoin('task_details','Users.id','task_details.user_id')
-        ->leftJoin('Tasks','task_details.task_id','Tasks.id')
-        ->leftJoin('Card_details','Users.id','Card_details.user_id')
-        ->where('Card_details.card_id',$request->type_card)
-        ->where('Users.status',2)
-        ->where('Users.name','Like','%'.$request->name_guide.'%')
-        ->groupBy('Users.id')
-        ->select(DB::raw('count(task_details.user_id) as task_number ,Users.*'))
+        $Task =  DB::table('users')
+        ->leftJoin('task_details','users.id','task_details.user_id')
+        ->leftJoin('tasks','task_details.task_id','tasks.id')
+        ->leftJoin('card_details','users.id','card_details.user_id')
+        ->where('card_details.card_id',$request->type_card)
+        ->where('users.status',2)
+        ->where('users.name','Like','%'.$request->name_guide.'%')
+        ->groupBy('users.id')
+        ->select(DB::raw('count(task_details.user_id) as task_number ,users.*'))
         ->get();
         // $Card_detail = Card_detail::where('card_id',$request->type_card)->get();
          return compact('Task');
@@ -59,8 +59,8 @@ class UserController extends Controller
     
     public function get_youself()
     {
-        $user =  DB::table('Users')
-        ->where('Users.id',Auth()->user()->id)
+        $user =  DB::table('users')
+        ->where('users.id',Auth()->user()->id)
         ->get();
 
         return view('v_profile')->with(compact('user'));

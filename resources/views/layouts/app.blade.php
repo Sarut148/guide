@@ -40,7 +40,7 @@
                     <!-- {{ config('app.name', 'Home') }} -->
                     <i class="fa fa-fw fa-home"></i>หน้าแรก
                 </a>
-                <a style="color:white;" class="navbar-brand" href="{{ url('/home') }}">
+                <a style="color:white;" class="navbar-brand" href="{{ url('home/') }}">
                     <!-- {{ config('app.name', 'Home') }} -->
                     <i class="fa fa-fw fa-users"></i>สำหรับมัคคุเทศน์
                 </a>

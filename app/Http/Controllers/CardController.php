@@ -36,9 +36,9 @@ class CardController extends Controller
     public function get_cardByID(Request $request)
     {
         $card = Card::All();
-        $img = Card_detail::leftjoin('Cards','Card_details.card_id','Cards.id')
+        $img = Card_detail::leftjoin('cards','card_details.card_id','cards.id')
         ->where('user_id',Auth()->user()->id)
-        ->select('Card_details.*','Cards.name as card_name')
+        ->select('card_details.*','cards.name as card_name')
         ->get();
         // dd($img);
         return view('v_manageCard')->with(compact('img','card'));

@@ -372,6 +372,7 @@ var search = new Vue({
         this.loading = true;
         this.showguide = false;
         this.rs = '';
+	this.rs_card = '';
         var self = this
             axios.post("/search_guide", {
                     type_card: self.type_card,
