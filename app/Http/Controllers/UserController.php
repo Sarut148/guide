@@ -47,11 +47,12 @@ class UserController extends Controller
         ->leftJoin('task_details','users.id','task_details.user_id')
         ->leftJoin('tasks','task_details.task_id','tasks.id')
         ->leftJoin('card_details','users.id','card_details.user_id')
+        ->leftJoin('cards','card_details.card_id','cards.id')
         ->where('card_details.card_id',$request->type_card)
         ->where('users.status',2)
         ->where('users.name','Like','%'.$request->name_guide.'%')
         ->groupBy('users.id')
-        ->select(DB::raw('count(task_details.user_id) as task_number ,users.*'))
+        ->select(DB::raw('count(task_details.user_id) as task_number,sum(tasks.price)+cards.price as task_price ,users.*'))
         ->get();
         // $Card_detail = Card_detail::where('card_id',$request->type_card)->get();
          return compact('Task');

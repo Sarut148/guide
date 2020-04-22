@@ -179,10 +179,11 @@
                         <table class="table table-striped table-bordered dataTable" role="grid"  >
                             <thead class="bg-primary text-white">
                                 <tr>
-                                    <th style="width:10%;text-align:center">#</th>
-                                    <th style="width:50%;text-align:center">ชื่อ</th>
-                                    <th style="width:20%;text-align:center">จำนวนงาน</th>
-                                    <th style="width:20%;text-align:center">ดำเนินการ</th>
+                                    <th style="width:5%;text-align:center">#</th>
+                                    <th style="width:40%;text-align:center">ชื่อ</th>
+                                    <th style="width:20%;text-align:center">จำนวนงานเดือนนี้</th>
+                                    <th style="width:20%;text-align:center">รายได้เดือนนี้</th>
+                                    <th style="width:15%;text-align:center">ดำเนินการ</th>
                                 </tr>
                             </thead>
                             <tbody v-show="loading">
@@ -202,6 +203,7 @@
                              <td style='text-align: center;'>@{{index+1}}</td>
                              <td style='text-align: center;'>@{{row.name}}</td>
                              <td style='text-align: center;'><span class='badge bg-red'></span>@{{row.task_number}}</td>
+                             <td style='text-align: center;' >@{{row.task_price}}</td>
                              <td style='text-align: center;'><input type='checkbox' name='check[]' v-bind:value='row.id'></td>
                            </tr>
                             </tbody>
@@ -311,6 +313,8 @@
 @section('script')
 <script src="../js/vue.js"></script>
 <script src="../js/axios.min.js"></script>
+<script src="../js/numeral.min.js"></script>
+
 <script>
 var app = new Vue({
   el: '#app',
@@ -382,7 +386,9 @@ var search = new Vue({
                     self.loading = false;
                     self.showguide = true;
                     var gg = response.data.Task;
-                    console.log(gg);
+                    for(i = 0;i<gg.length;i++){
+                        gg[i].task_price = numeral(gg[0].task_price).format('0,0');
+                    }
                     self.guide_list = gg;
                 })
                 .catch(function(error) {
