@@ -23,14 +23,16 @@
                         <table class="table table-hover">
                             <tr>
                                 <th>#</th>
-                                <th>ชื่อ</th>
-                                <th>อัตราค่าจ้าง</th>
+                                <th>สีบัตร</th>
+                                <th>รายละเอียด</th>
+                                <th>อัตราค่าจ้างต่อวัน</th>
                                 <th>ดำเนินการ</th>
                             </tr>
                             @foreach($card as $index => $val)
                                 <tr>
                                     <td>{{$index+1}}</td>
                                     <td>{{$val->name}}</td>
+                                    <td>{{$val->detail}}</td>
                                     <td>{{$val->price}}</td>
                                     <td>
                                     <form id="form_delete" method="post" action="/delete-typecard">
@@ -67,15 +69,15 @@
             <div class="modal-body form-horizontal">
               <div class="box-body ">
                 <div class="form-group">
-                    <label for="name" class="col-sm-3 control-label">ชื่อบัตร</label>
+                    <label for="name" class="col-sm-3 control-label">สีบัตร</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="name" name="name" placeholder="ชื่อบัตร">
+                        <input type="text" class="form-control" id="name" name="name" placeholder="สีบัตร">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="price" class="col-sm-3 control-label">ค่าตอบแทน</label>
+                    <label for="price" class="col-sm-3 control-label">อัตราค่าจ้างต่อวัน</label>
                     <div class="col-sm-9">
-                        <input type="number" class="form-control" id="price" name="price" placeholder="ค่าตอบแทน" required>
+                        <input type="number" class="form-control" id="price" name="price" placeholder="อัตราค่าจ้างต่อวัน" required>
                     </div>
                 </div>
                 <div class="form-group">
@@ -110,15 +112,15 @@
             <div class="modal-body form-horizontal">
               <div class="box-body ">
                 <div class="form-group">
-                    <label for="name" class="col-sm-3 control-label">ชื่อบัตร</label>
+                    <label for="name" class="col-sm-3 control-label">สีบัตร</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="name" name="name" placeholder="ชื่อทัวร์ ชื่อท่องเที่ยว รายการ...." value="{{$val->name}}">
+                        <input type="text" class="form-control" id="name" name="name" placeholder="สีบัตร" value="{{$val->name}}">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="price" class="col-sm-3 control-label">ค่าตอบแทน</label>
+                    <label for="price" class="col-sm-3 control-label">อัตราค่าจ้างต่อวัน</label>
                     <div class="col-sm-9">
-                        <input type="number" class="form-control" id="price" name="price" placeholder="ค่าตอบแทน" required value="{{$val->price}}">
+                        <input type="number" class="form-control" id="price" name="price" placeholder="อัตราค่าจ้างต่อวัน" required value="{{$val->price}}">
                     </div>
                 </div>
                 <div class="form-group">

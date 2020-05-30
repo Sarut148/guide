@@ -32,13 +32,13 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
-<body class="{{ Request::path() == '/'  ? 'background-color2' : 'background-color' }}">
+<body class="{{ Request::path() == '/'  ? '' : 'background-color' }}">
     <div id="app" >
         <nav class="navbar navbar-expand-md navbar-light shadow-sm" style="background-color:midnightblue;" >
             <div class="container" >
                 <a style="color:white;" class="navbar-brand" href="{{ url('/') }}">
                     <!-- {{ config('app.name', 'Home') }} -->
-                    <i class="fa fa-fw fa-home"></i>หน้าแรก
+                    <i class="fa fa-fw fa-home"></i>โปรแกรมทัวร์
                 </a>
                 <a style="color:white;" class="navbar-brand" href="{{ url('home/') }}">
                     <!-- {{ config('app.name', 'Home') }} -->

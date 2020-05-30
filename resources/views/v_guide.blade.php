@@ -109,7 +109,10 @@ var search = new Vue({
                         for(var i = 0;i<Task.length; i++){
                             Task_user.push({
                                 title:Task[i].name,
-                                start:Task[i].date,
+                                start:Task[i].date_start,
+                                end:Task[i].date_end,
+                                color  : '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
+                                
                             });
                             }
                 return Task_user;
@@ -119,14 +122,14 @@ var search = new Vue({
                     var calendar = new FullCalendar.Calendar(calendarEl, {
                             plugins: [ 'interaction', 'dayGrid', 'timeGrid' ],
                             defaultView: 'dayGridMonth',
-                            defaultDate: '2020-04-07',
+                            defaultDate: new Date(),
                             locale: 'th',
                             header: {
                             left: 'prev,next today',
                             center: 'title',
                             right: 'dayGridMonth,timeGridWeek,timeGridDay'
                             },
-                            events: Task_user
+                            events: Task_user,
                         });
                         calendar.render();
                         var gg = '1234';

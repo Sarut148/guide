@@ -45,6 +45,22 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="email" class="col-sm-2 control-label">ที่อยู่</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" id="address" name="address" placeholder="ที่อยู่" value="{{$user[0]->address}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="email" class="col-sm-2 control-label">เบอร์โทร</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" id="tel" name="tel" placeholder="เบอร์โทร" value="{{$user[0]->tel}}">
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="box-footer">
                                     <button type="submit" class="btn-lg btn-success btn-rounded btn-md ml-4" >บันทึก</button>

@@ -1,6 +1,4 @@
 @extends('layouts.admin_lte')
-@section('style')
-@endsection
 @section('content')
 <div class="container" id="app">
     <div class="row justify-content-center">
@@ -24,8 +22,8 @@
                             <tr>
                                 <th style="text-align: center;width:5%">#</th>
                                 <th style="text-align: center;width:25%">ชื่อทัวร์</th>
-                                <th style="text-align: center;width:15%">วันที่</th>
-                                <th style="text-align: center;width:10%">สถานะ</th>
+                                <th style="text-align: center;width:20%">วันที่</th>
+                                <th style="text-align: center;width:5%">สถานะ</th>
                                 <th style="text-align: center;width:25%">ไกด์</th>
                                 <th style="text-align: center;width:20%">ดำเนินการ</th>
                             </tr>
@@ -33,12 +31,22 @@
                             <tr>
                                 <td style="text-align: center;">{{ $index + 1 }}</td>
                                 <td>{{$value->name }}</td>
-                                <td style="text-align: center;">{{ date("d/m/Y", strtotime($value->date)) }}</td>
+                                <td style="text-align: center;">{{ date("d/m/Y", strtotime($value->date_start)) }} - {{ date("d/m/Y", strtotime($value->date_end)) }}</td>
                                 <td style="text-align: center;">
-                                @if($value->status == 1)
-                                <span class="label label-success">พร้อม</span>
+                                <?php 
+                                $id_ = $value->id;
+                                $data_result = false;
+                                    foreach($task_detail as $value_status){
+                                            if($value_status->task_id == $id_){
+                                                $data_result = true;
+                                            }
+                                    }
+                               
+                                ?>
+                                @if($data_result)
+                                <span class="label label-success">จัดแล้ว</span>
                                 @else
-                                <span class="label label-danger">ไม่พร้อม</span>
+                                <span class="label label-danger">ยังไม่จัด</span>
                                 @endif
                             </td>
                             <td style="text-align: center;">
@@ -55,11 +63,10 @@
                                 <td style="text-align: center;">
                                 <form method="post" action="/delete-tour">
                                 @csrf
-                                    @if($value->status == 1)
-                                        <button type="button" class="btn btn-success waves-effect waves-light" @click="set_id({{$value->id}})" data-toggle="modal" data-target="#modal-search"><i class="fa fa-fw fa-plus"></i></button>
-                                    @endif
+                                        <button type="button" class="btn btn-success waves-effect waves-light" @click="set_id({{$value->id}},{{$value->type_id}})" data-toggle="modal" data-target="#modal-search"><i class="fa fa-fw fa-plus"></i></button>
                                     <button type="button" class="btn btn-warning waves-effect waves-light" data-toggle="modal" data-target="#modal-edit-{{$value->id}}"><i class="fa fa-fw fa-edit"></i></button>  
                                     <button type="submit" name="id" value="{{$value->id}}" class="btn btn-danger waves-effect waves-light" data-tooltip="tooltip" title="ลบ"><i class="fa fa-fw fa-trash"></i></button>  
+    
                                 </form>  
                                 <!-- <a href="update-tour/{{$value->id}}"><button type="button" class="btn btn-warning waves-effect waves-light" data-tooltip="tooltip" title="แก้ใข"><i class="fa fa-fw fa-edit"></i></button></a>                        -->
                                 </td>
@@ -100,29 +107,35 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="name" class="col-sm-3 control-label">วันที่</label>
+                    <label for="name" class="col-sm-3 control-label">วันที่เริ่ม</label>
                     <div class="col-sm-9">
                         <div class="input-group">
                         <div class="input-group-addon">
                             <i class="fa fa-clock-o"></i>
                         </div>
-                                <input type="date" class="form-control pull-right" id="date" name="date"required>
+                                <input type="date" class="form-control pull-right" id="date_start" name="date_start"required>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
-                <label for="name" class="col-sm-3 control-label">สถานะ</label>
+                    <label for="name" class="col-sm-3 control-label">วันที่สิ้นสุด</label>
                     <div class="col-sm-9">
-                        <select class="form-control" id="status" name="status" v-model="status">
-                            <option selected value="0">ไม่พร้อม</option>
-                            <option value="1">พร้อม</option>
-                        </select>
+                        <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-clock-o"></i>
+                        </div>
+                                <input type="date" class="form-control pull-right" id="date_end" name="date_end"required>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="price" class="col-sm-3 control-label">ค่าตอบแทน</label>
+                <label for="name" class="col-sm-3 control-label">สีบัตร</label>
                     <div class="col-sm-9">
-                        <input type="number" class="form-control" id="price" name="price" placeholder="ค่าตอบแทน" required>
+                    <select class="form-control input" name="type_card" id="type_card" required >
+                        @foreach($card as $index_c => $value_c)
+                                <option value="{{$value_c->id}}">{{$value_c->name}}</option>
+                        @endforeach
+                    </select>
                     </div>
                 </div>
                 <div class="form-group">
@@ -152,15 +165,16 @@
       <!--Body-->
       <div class="modal-body">
           <h3 style="text-align: center;">ค้นหาไกด์</h3>
-                <div class="form-group">
+                <!-- <div class="form-group">
                 <select class="form-control input" name="type_card" id="type_card" v-model="type_card" >
                 @foreach($card as $index_c => $value_c)
                             <option value="{{$value_c->id}}">{{$value_c->name}}</option>
                     @endforeach
                     </select>
-                </div>
+                </div> -->
             <div class="form-group" style="text-align: center;">
                 <input type="hidden" id="id" name="id" v-model="search_id">
+                <input type="hidden" id="type_card" name="type_card" v-model="type_card">
             </div>
             <div class="input-group margin">
                 <input class="form-control input" type="text" placeholder="ชื่อไกด์" v-model="guide_name"> 
@@ -182,7 +196,7 @@
                                     <th style="width:5%;text-align:center">#</th>
                                     <th style="width:40%;text-align:center">ชื่อ</th>
                                     <th style="width:20%;text-align:center">จำนวนงานเดือนนี้</th>
-                                    <th style="width:20%;text-align:center">รายได้เดือนนี้</th>
+                                    <!-- <th style="width:20%;text-align:center">รายได้เดือนนี้</th> -->
                                     <th style="width:15%;text-align:center">ดำเนินการ</th>
                                 </tr>
                             </thead>
@@ -203,7 +217,7 @@
                              <td style='text-align: center;'>@{{index+1}}</td>
                              <td style='text-align: center;'>@{{row.name}}</td>
                              <td style='text-align: center;'><span class='badge bg-red'></span>@{{row.task_number}}</td>
-                             <td style='text-align: center;' >@{{row.task_price}}</td>
+                             <!-- <td style='text-align: center;' >@{{row.task_price}}</td> -->
                              <td style='text-align: center;'><input type='checkbox' name='check[]' v-bind:value='row.id'></td>
                            </tr>
                             </tbody>
@@ -262,34 +276,39 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="name" class="col-sm-3 control-label">วันที่</label>
+                    <label for="name" class="col-sm-3 control-label">วันที่เริ่ม</label>
                     <div class="col-sm-9">
                         <div class="input-group">
                         <div class="input-group-addon">
                             <i class="fa fa-clock-o"></i>
                         </div>
-                                <input type="date" class="form-control pull-right" id="date" name="date" value="{{$value->date}}" required>
+                                <input type="date" class="form-control pull-right" id="date_start" name="date_start" value="{{$value->date_start}}" required>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
-                <label for="name" class="col-sm-3 control-label">สถานะ</label>
+                    <label for="name" class="col-sm-3 control-label">วันที่สิ้นสุด</label>
                     <div class="col-sm-9">
-                        <select class="form-control" id="status" name="status" value="{{$value->status}}">
-                            @if($value->status == 1)
-                            <option  value="0">ไม่พร้อม</option>
-                            <option selected value="1">พร้อม</option>
-                            @else
-                            <option selected value="0">ไม่พร้อม</option>
-                            <option  value="1">พร้อม</option>
-                            @endif
-                        </select>
+                        <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-clock-o"></i>
+                        </div>
+                                <input type="date" class="form-control pull-right" id="date_end" name="date_end" value="{{$value->date_end}}" required>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="price" class="col-sm-3 control-label">ค่าตอบแทน</label>
+                <label for="name" class="col-sm-3 control-label">สีบัตร</label>
                     <div class="col-sm-9">
-                        <input type="number" class="form-control" id="price" name="price" placeholder="ค่าตอบแทน" value="{{$value->price}}">
+                    <select class="form-control input" name="type_card" id="type_card" value="{{$value->type_id}}" required >
+                        @foreach($card as $index_c => $value_c)
+                            @if($value_c->id == $value->type_id)
+                                <option selected value="{{$value_c->id}}">{{$value_c->name}}</option>
+                            @else
+                            <option value="{{$value_c->id}}">{{$value_c->name}}</option>
+                            @endif
+                        @endforeach
+                    </select>
                     </div>
                 </div>
                 <div class="form-group">
@@ -321,8 +340,9 @@ var app = new Vue({
   data: {
   },
   methods:{
-    set_id:function(id){
+    set_id:function(id,type){
         search.search_id = id;
+        search.type_card = type;
     }
   },
 

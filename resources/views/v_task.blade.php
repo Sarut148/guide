@@ -49,7 +49,8 @@
                     for(var i = 0;i< task.length; i++){
                         Task_user.push({
                                 title:task[i].name,
-                                start:task[i].date,
+                                start:task[i].date_start,
+                                end:task[i].date_end,
                             });
                     }
                     $("#calendar").html('');

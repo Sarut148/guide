@@ -72,19 +72,19 @@ class CardController extends Controller
         $card->card_id = $request->type_card;
         $card->user_id = Auth()->user()->id;
         $card->img = $imageName;
+        $card->card_no = $request->card_no;
+        $card->date = $request->date;
         $card->save();
         return redirect('/manage-yourcard');
     }
     public function delete_card(Request $request)
     {
-        $tour = Card_detail::find($request->id);
-        $tour->delete();
+        Card_detail::where('id',$request->id)->delete();
         return redirect('/manage-yourcard');
     }
     public function delete_type(Request $request)
     {
-        $tour = Card::find($request->id);
-        $tour->delete();
+        Card::where('id',$request->id)->delete();
         return redirect('/manage-card');
     }
     

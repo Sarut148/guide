@@ -27,7 +27,7 @@ class TourController extends Controller
     public function index()
     {
         $user_Auth = Auth()->user()->status;
-        $task = Task::orderBy('date','desc')->get();
+        $task = Task::orderBy('date_start','desc')->get();
         $task_detail = Task_detail::All();
         $guide = User::where('status',2)->get();
         $card = Card::All();
@@ -50,8 +50,10 @@ class TourController extends Controller
         $tour->name = $request->name;
         $tour->description = $request->detail;
         $tour->guide_id = $request->guide;
-        $tour->date = $request->date;
+        $tour->date_start = $request->date_start;
+        $tour->date_end = $request->date_end;
         $tour->status = $request->status;
+        $tour->type_id = $request->type_card;
         $tour->image = $imageName;
         $tour->price = $request->price;
         $tour->save();
@@ -72,16 +74,19 @@ class TourController extends Controller
         $tour->name = $request->name;
         $tour->description = $request->detail;
         $tour->guide_id = $request->guide;
-        $tour->date = $request->date;
+        $tour->date_start = $request->date_start;
+        $tour->date_end = $request->date_end;
         $tour->status = $request->status;
+        $tour->type_id = $request->type_card;
         $tour->price = $request->price;
         $tour->save();
         return redirect('/show-tour');
     }
     public function delete(Request $request)
     {
-        $tour = Task::find($request->id);
-        $tour->delete();
+        // $tour = Task::find($request->id);
+        Task::where('id',$request->id)->delete();
+        // $tour->delete();
         return redirect('/show-tour');
     }
     public function add_guide(Request $request)

@@ -22,16 +22,20 @@
                         <div class="box-body table-responsive no-padding">
                         <table class="table table-hover">
                             <tr style="text-align: center;">
-                                <th style="text-align: center;width:10%">#</th>
+                                <th style="text-align: center;width:5%">#</th>
+                                <th style="text-align: center;width:10%">เลขที่บัตร</th>
                                 <th style="text-align: center;width:40%">รูป</th>
-                                <th style="text-align: center;width:30%">ประเภท</th>
+                                <th style="text-align: center;width:10%">ประเภทบัตร</th>
+                                <th style="text-align: center;width:15%">วันหมดอายุ</th>
                                 <th style="text-align: center;width:20%">ดำเนินการ</th>
                             </tr>
                             @foreach($img as $index => $val)
                                 <tr style="text-align: center;">
                                     <td>{{$index+1}}</td>
+                                    <td>{{$val->card_no}}</td>
                                     <td><img src="../images/card/{{$val->img}}" width="250px" height="100px"></td>
                                     <td>{{$val->card_name}}</td>
+                                    <td>{{$val->date}}</td>
                                     <td>
                                     <form method="post" action="/delete-card">
                                         @csrf
@@ -80,9 +84,25 @@
                                 </div>
                             </div>
                     </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="name" class="col-md-2 control-label">เลขที่บัตร</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" id="card_no" name="card_no" placeholder="เลขที่บัตร" maxlength="10" >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="name" class="col-md-2 control-label">วันที่บัตรหมดอายุ</label>
+                            <div class="col-md-10">
+                                <input type="date" class="form-control" id="date" name="date">
+                            </div>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label for="name" class="col-md-2 control-label">ประเภท</label>
-                            <div class="col-md-8">
+                            <div class="col-md-10">
                                 <select class="form-control input" name="type_card" id="type_card">
                                     @foreach($card as $index_c => $value_c)
                                         <?php $check = false; ?>
